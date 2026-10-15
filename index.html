@@ -35,21 +35,12 @@
   button{ font-family: inherit; }
   p{ margin: 0; }
 
-  /* ---------- toolbar ---------- */
-  .toolbar{ position: sticky; top: 0; z-index: 40; background: color-mix(in srgb, var(--paper) 92%, transparent); backdrop-filter: blur(8px); border-bottom: 1px solid color-mix(in srgb, var(--ink) 12%, transparent); }
-  .toolbar-inner{ max-width: 1320px; margin: 0 auto; padding: 13px 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
-  .toolbar-title{ font-size: 13px; color: var(--ink-soft); display: flex; align-items: center; gap: 9px; }
   .rec-dot{ width: 7px; height: 7px; border-radius: 50%; background: var(--clay); animation: pulse 1.8s ease-in-out infinite; flex: none; }
   @media (prefers-reduced-motion: reduce){ .rec-dot{ animation: none; } }
   @keyframes pulse{ 0%,100%{ opacity: 1; } 50%{ opacity: 0.35; } }
-  .device-toggle{ display: flex; background: var(--paper-2); border-radius: 999px; padding: 3px; gap: 2px; }
-  .device-toggle button{ border: none; background: transparent; color: var(--ink-soft); font-size: 12.5px; font-weight: 500; padding: 8px 18px; border-radius: 999px; cursor: pointer; transition: background 0.15s, color 0.15s; }
-  .device-toggle button.active{ background: var(--ink); color: var(--paper); }
-  .device-toggle button:focus-visible{ outline: 2px solid var(--clay); outline-offset: -2px; }
 
   .stage{ padding: 44px 20px 20px; display: flex; justify-content: center; }
-  .frame{ container-type: inline-size; container-name: portfolio; width: 100%; max-width: 1320px; transition: width 0.4s cubic-bezier(.4,0,.2,1); }
-  .frame.mobile{ width: 390px; max-width: 390px; border-radius: 26px; box-shadow: var(--shadow-card); background: var(--paper); border: 1px solid color-mix(in srgb, var(--ink) 10%, transparent); }
+  .frame{ container-type: inline-size; container-name: portfolio; width: 100%; max-width: 1320px; }
 
   /* ---------- shared bits ---------- */
   .tape{ position: absolute; height: 26px; width: 74px; opacity: 0.85; box-shadow: 0 1px 2px rgba(0,0,0,0.12); }
@@ -245,18 +236,8 @@
   }
 </style>
 
-<div class="toolbar">
-  <div class="toolbar-inner">
-    <span class="toolbar-title"><span class="rec-dot" aria-hidden="true"></span>Viewfinder - layout preview</span>
-    <div class="device-toggle" role="group" aria-label="Preview size">
-      <button type="button" data-mode="desktop" class="active">Desktop</button>
-      <button type="button" data-mode="mobile">Mobile</button>
-    </div>
-  </div>
-</div>
-
 <div class="stage">
-  <div class="frame desktop" id="frame">
+  <div class="frame" id="frame">
 
     <!-- HERO -->
     <section class="hero">
@@ -508,18 +489,6 @@
   })();
 
   (function(){
-    var frame = document.getElementById('frame');
-    var buttons = document.querySelectorAll('.device-toggle button');
-    buttons.forEach(function(btn){
-      btn.addEventListener('click', function(){
-        buttons.forEach(function(b){ b.classList.remove('active'); });
-        btn.classList.add('active');
-        var mode = btn.getAttribute('data-mode');
-        frame.classList.toggle('mobile', mode === 'mobile');
-        frame.classList.toggle('desktop', mode === 'desktop');
-      });
-    });
-
     function makeDraggable(el){
       var isDown = false, dragging = false, startX, scrollLeft, pointerId;
       el.addEventListener('pointerdown', function(e){
